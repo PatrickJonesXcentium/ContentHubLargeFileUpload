@@ -57,7 +57,7 @@ namespace ContentHubLargeFileUpload
 
                 int chunkCounter = 0;
                 Dictionary<int, byte[]> fileChunks = new Dictionary<int, byte[]>();
-                foreach (var chunk in base64EncodedBytes.ToChunks(1048576)) // 1 Megabyte chunks per https://docs.stylelabs.com/contenthub/4.1.x/content/integrations/rest-api/upload/upload-large-files.html
+                foreach (var chunk in base64EncodedBytes.ToChunks(1000000)) // approx. 1 Megabyte chunks per https://docs.stylelabs.com/contenthub/4.1.x/content/integrations/rest-api/upload/upload-large-files.html
                 {
                     fileChunks.Add(chunkCounter, chunk.ToArray()); ;
                     chunkCounter++;
