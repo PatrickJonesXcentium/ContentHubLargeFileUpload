@@ -23,9 +23,7 @@ namespace ContentHubLargeFileUpload
         const string TOKEN_HEADER = "X-Auth-Token";
 
         [FunctionName("LargeFileUpload")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
-            ILogger log)
+        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req, ILogger log)
         {
             HttpClient client = new HttpClient();
 
