@@ -50,7 +50,7 @@ namespace ContentHubLargeFileUpload
 
                 if (!valid.Valid)
                 {
-                    return new BadRequestObjectResult(valid.Errors.ElementAt(0).ErrorMessage);
+                    return new BadRequestObjectResult(new LargeUploadResponse { Message = valid.Errors.ElementAt(0).ErrorMessage });
                 }
 
                 string fileName = data.Filename;
@@ -86,8 +86,9 @@ namespace ContentHubLargeFileUpload
                     multipartContent.Add(byteArrayContent);
                     var resp = await client.PostAsync(uploadUrl, multipartContent);
                     if (!resp.IsSuccessStatusCode)
-                    { 
-                        return new BadRequestObjectResult(await resp.Content.ReadAsStringAsync());
+                    {
+                        var msg = await resp.Content.ReadAsStringAsync();
+                        return new BadRequestObjectResult(new LargeUploadResponse { Message = msg });
                     }
                 }
 
@@ -99,9 +100,9 @@ namespace ContentHubLargeFileUpload
                     return new OkObjectResult(finalResp.Response);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return new StatusCodeResult((int)HttpStatusCode.InternalServerError);
+                return new UnprocessableEntityObjectResult(new LargeUploadResponse { Message = ex.Message });
             }
 
             return new NoContentResult();
