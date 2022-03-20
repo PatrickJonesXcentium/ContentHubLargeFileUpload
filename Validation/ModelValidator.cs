@@ -28,6 +28,7 @@ namespace ContentHubLargeFileUpload.Validation
             {
                 // collection to contain validation failures
                 var valFailures = new List<ValidationResult>();
+
                 // perform model validation
                 bool valResult = Validator.TryValidateObject(
                     modelInstance,

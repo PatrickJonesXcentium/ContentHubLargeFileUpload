@@ -15,6 +15,7 @@ using System.Net.Http.Headers;
 using System.Net;
 using System.Text;
 using ContentHubLargeFileUpload.Validation;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 
 namespace ContentHubLargeFileUpload
 {
@@ -27,6 +28,9 @@ namespace ContentHubLargeFileUpload
         const string UPLOAD_ROUTE = "api/v2.0/upload";
 
         [FunctionName("LargeFileUpload")]
+        [OpenApiOperation(operationId: "Run", tags: new[] { "name" })]
+        [OpenApiRequestBody("application/json", typeof(LargeUploadRequest))]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(LargeUploadResponse))]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req, ILogger log)
         {
             HttpClient client = new HttpClient();
@@ -57,7 +61,7 @@ namespace ContentHubLargeFileUpload
 
                 int chunkCounter = 0;
                 Dictionary<int, byte[]> fileChunks = new Dictionary<int, byte[]>();
-                foreach (var chunk in base64EncodedBytes.ToChunks(1000000)) // approx. 1 Megabyte chunks per https://docs.stylelabs.com/contenthub/4.1.x/content/integrations/rest-api/upload/upload-large-files.html
+                foreach (var chunk in base64EncodedBytes.ToChunks(1000000)) //(1000000)) approx. 1 Megabyte chunks per https://docs.stylelabs.com/contenthub/4.1.x/content/integrations/rest-api/upload/upload-large-files.html
                 {
                     fileChunks.Add(chunkCounter, chunk.ToArray()); ;
                     chunkCounter++;
