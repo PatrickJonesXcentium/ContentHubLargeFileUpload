@@ -40,6 +40,9 @@ namespace ContentHubLargeFileUpload
                 log.LogInformation("C# HTTP trigger function processed a request.");
 
                 string jsonContent = await new StreamReader(req.Body).ReadToEndAsync();
+
+                log.LogInformation($"Incoming request: \n {jsonContent}");
+
                 LargeUploadRequest data = JsonConvert.DeserializeObject<LargeUploadRequest>(jsonContent);
 
                 var mv = new ModelValidator<LargeUploadRequest>();
@@ -57,7 +60,6 @@ namespace ContentHubLargeFileUpload
                 client.DefaultRequestHeaders.Add(TOKEN_HEADER, data.ContentHubToken);
 
                 var base64EncodedBytes = System.Convert.FromBase64String(fileData);
-                var result = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
 
                 int chunkCounter = 0;
                 Dictionary<int, byte[]> fileChunks = new Dictionary<int, byte[]>();
