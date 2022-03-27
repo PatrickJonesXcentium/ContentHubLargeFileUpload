@@ -87,3 +87,16 @@ The HTTP trigger is a POST request with the following schema and example payload
 **400** - Bad request<br />
 **422** - Unprocessable entity (Azure function thew exception, file contents not base64 format, etc.)
 
+## Azure Function API Documentation
+This Azure function has been configured to generate Open API documentation and URLS
+```
+LargeFileUpload: [POST] http://localhost:7071/api/LargeFileUpload
+
+RenderOAuth2Redirect: [GET] http://localhost:7071/api/oauth2-redirect.html
+
+RenderOpenApiDocument: [GET] http://localhost:7071/api/openapi/{version}.{extension}
+
+RenderSwaggerDocument: [GET] http://localhost:7071/api/swagger.{extension}
+
+RenderSwaggerUI: [GET] http://localhost:7071/api/swagger/ui
+```
